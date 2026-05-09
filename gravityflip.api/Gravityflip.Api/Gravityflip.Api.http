@@ -1,0 +1,6 @@
+@Gravityflip.Api_HostAddress = http://localhost:5044
+
+GET {{Gravityflip.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

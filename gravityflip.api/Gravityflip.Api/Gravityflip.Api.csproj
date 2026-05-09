@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.25" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gravityflip.Api.Adaptadores\Gravityflip.Api.Adaptadores.csproj" />
+    <ProjectReference Include="..\Gravityflip.Api.Aplicacion\Gravityflip.Api.Aplicacion.csproj" />
+    <ProjectReference Include="..\Gravityflip.Api.Dominio\Gravityflip.Api.Dominio.csproj" />
+    <ProjectReference Include="..\Gravityflip.Api.Infraestructura\Gravityflip.Api.Infraestructura.csproj" />
+    <ProjectReference Include="..\Gravityflip.Api.Puertos\Gravityflip.Api.Puertos.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,93 @@
+# ═════════════════════════════════════════════════════════════════════════════
+# DOCKER COMPOSE COMPLETO — Levanta los 4 servicios juntos
+# ═════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Base de datos PRIMARIA (SQL Server)
+  # ──────────────────────────────────────────────────────────────────────────
+  gravityflip_db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gravityflip_db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=GravityFlip2024!
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - gravityflip_primary_data:/var/opt/mssql
+    networks:
+      - gravityflip_network
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Base de datos RÉPLICA (PostgreSQL)
+  # ──────────────────────────────────────────────────────────────────────────
+  gravityflip_db_replica:
+    image: postgres:16-alpine
+    container_name: gravityflip_db_replica
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=GravityFlip2024!
+      - POSTGRES_DB=gravityflipdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - gravityflip_replica_data:/var/lib/postgresql/data
+    networks:
+      - gravityflip_network
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # API .NET (escrituras + autenticación)
+  # ──────────────────────────────────────────────────────────────────────────
+  gravityflip_api_net:
+    build:
+      context: ./gravityflip.api
+      dockerfile: Dockerfile
+    container_name: gravityflip_api_net
+    ports:
+      - "5044:5044"
+    depends_on:
+      - gravityflip_db
+      - gravityflip_db_replica
+    environment:
+      # Sobreescribir las cadenas de conexión usando los nombres de los contenedores
+      - ConnectionStrings__SqlServer=Server=gravityflip_db,1433;Database=GravityflipDB;User Id=sa;Password=GravityFlip2024!;TrustServerCertificate=True
+      - ConnectionStrings__PostgresReplica=Host=gravityflip_db_replica;Port=5432;Database=gravityflipdb;Username=postgres;Password=GravityFlip2024!
+    networks:
+      - gravityflip_network
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # API NestJS (solo lectura desde PostgreSQL)
+  # ──────────────────────────────────────────────────────────────────────────
+  gravityflip_api_nestjs:
+    build:
+      context: ./gravityflip-nestjs
+      dockerfile: Dockerfile
+    container_name: gravityflip_api_nestjs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gravityflip_db_replica
+    environment:
+      - DB_HOST=gravityflip_db_replica
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=GravityFlip2024!
+      - DB_NAME=gravityflipdb
+    networks:
+      - gravityflip_network
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Volúmenes persistentes
+# ─────────────────────────────────────────────────────────────────────────────
+volumes:
+  gravityflip_primary_data:
+  gravityflip_replica_data:
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Red interna para que los contenedores se comuniquen
+# ─────────────────────────────────────────────────────────────────────────────
+networks:
+  gravityflip_network:
+    driver: bridge

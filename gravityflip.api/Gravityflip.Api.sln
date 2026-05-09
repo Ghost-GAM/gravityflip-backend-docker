@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gravityflip.Api", "Gravityflip.Api\Gravityflip.Api.csproj", "{24AAC08B-E828-42D1-9201-12AE322B5B4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gravityflip.Api.Adaptadores", "Gravityflip.Api.Adaptadores\Gravityflip.Api.Adaptadores.csproj", "{F607B9C4-BB77-4B93-BBF2-E788F692315E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gravityflip.Api.Aplicacion", "Gravityflip.Api.Aplicacion\Gravityflip.Api.Aplicacion.csproj", "{422BD7DA-276C-446D-9C62-0B5AC2E4E613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gravityflip.Api.Dominio", "Gravityflip.Api.Dominio\Gravityflip.Api.Dominio.csproj", "{CC858756-899C-4F78-994A-23F88106806E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gravityflip.Api.Puertos", "Gravityflip.Api.Puertos\Gravityflip.Api.Puertos.csproj", "{3DEBE47A-634B-44E3-ABA0-D88D5E63B9A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24AAC08B-E828-42D1-9201-12AE322B5B4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AAC08B-E828-42D1-9201-12AE322B5B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AAC08B-E828-42D1-9201-12AE322B5B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AAC08B-E828-42D1-9201-12AE322B5B4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F607B9C4-BB77-4B93-BBF2-E788F692315E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F607B9C4-BB77-4B93-BBF2-E788F692315E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F607B9C4-BB77-4B93-BBF2-E788F692315E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F607B9C4-BB77-4B93-BBF2-E788F692315E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{422BD7DA-276C-446D-9C62-0B5AC2E4E613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{422BD7DA-276C-446D-9C62-0B5AC2E4E613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{422BD7DA-276C-446D-9C62-0B5AC2E4E613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{422BD7DA-276C-446D-9C62-0B5AC2E4E613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC858756-899C-4F78-994A-23F88106806E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC858756-899C-4F78-994A-23F88106806E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC858756-899C-4F78-994A-23F88106806E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC858756-899C-4F78-994A-23F88106806E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEBE47A-634B-44E3-ABA0-D88D5E63B9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEBE47A-634B-44E3-ABA0-D88D5E63B9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEBE47A-634B-44E3-ABA0-D88D5E63B9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEBE47A-634B-44E3-ABA0-D88D5E63B9A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,38 @@
+services:
+  # ── Contenedor PRIMARIO: SQL Server (escrituras) ──────────────────────────
+  sqlserver-primary:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gravityflip_db
+    environment:
+      SA_PASSWORD: "GravityFlip2024!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - gravityflip_primary_data:/var/opt/mssql
+    networks:
+      - gravityflip_network
+
+  # ── Contenedor RÉPLICA: PostgreSQL (solo lectura) ─────────────────────────
+  postgres-replica:
+    image: postgres:16-alpine
+    container_name: gravityflip_db_replica
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: GravityFlip2024!
+      POSTGRES_DB: gravityflipdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - gravityflip_replica_data:/var/lib/postgresql/data
+    networks:
+      - gravityflip_network
+
+networks:
+  gravityflip_network:
+    driver: bridge
+
+volumes:
+  gravityflip_primary_data:
+  gravityflip_replica_data:
