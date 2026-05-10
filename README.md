@@ -67,6 +67,9 @@ docker-compose up -d
 
 #### `POST /api/auth/login` — Login / Registro
 
+URL completa: `http://localhost:5044/api/auth/login`
+
+Body:
 ```json
 {
   "nombreJugador": "Kevin",
@@ -77,6 +80,8 @@ docker-compose up -d
 Devuelve un token JWT.
 
 #### `POST /api/resultado/guardar` — Guardar puntaje (requiere JWT)
+
+URL completa: `http://localhost:5044/api/resultado/guardar`
 
 Headers:
 ```
@@ -95,13 +100,21 @@ Body:
 
 #### `GET /api/resultado/tabla` — Top 10 (público)
 
+URL completa: `http://localhost:5044/api/resultado/tabla`
+
+Lee de PostgreSQL (réplica). Tambien disponible desde la API NestJS.
+
 ### API NestJS (puerto 3000)
 
 #### `GET /api/resultado/tabla` — Top 10
 
+URL completa: `http://localhost:3000/api/resultado/tabla`
+
 Lee de PostgreSQL (réplica).
 
 #### `GET /api/resultado/estadisticas` — Estadísticas globales
+
+URL completa: `http://localhost:3000/api/resultado/estadisticas`
 
 ```json
 {
