@@ -1,0 +1,45 @@
+# ═════════════════════════════════════════════════════════════════════════════
+# WORKFLOW REUTILIZABLE
+# Construye una imagen Docker (puede llamarse desde otros workflows)
+# ═════════════════════════════════════════════════════════════════════════════
+name: Reusable Build
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+        description: 'Nombre del servicio a construir (api-net o api-nestjs)'
+      context_path:
+        required: true
+        type: string
+        description: 'Ruta del Dockerfile (ej: ./gravityflip.api)'
+    secrets:
+      DB_PASSWORD:
+        required: true
+        description: 'Contraseña de la base de datos'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Construir imagen Docker de ${{ inputs.service_name }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.context_path }}
+          file: ${{ inputs.context_path }}/Dockerfile
+          push: false
+          tags: ${{ inputs.service_name }}:latest
+          build-args: |
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+
+      - name: Verificar que la imagen se construyó
+        run: |
+          echo "Imagen ${{ inputs.service_name }}:latest construida exitosamente"

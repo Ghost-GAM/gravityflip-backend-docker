@@ -1,0 +1,65 @@
+# ═════════════════════════════════════════════════════════════════════════════
+# WORKFLOW PRINCIPAL
+# Se ejecuta automaticamente cuando alguien hace push o pull request a main
+# Llama al workflow reutilizable para construir las 2 APIs
+# ═════════════════════════════════════════════════════════════════════════════
+name: Build Backend APIs
+
+# ── Eventos que disparan este workflow ───────────────────────────────────────
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:        # Permite ejecutar manualmente desde GitHub
+
+# ── Variables globales del workflow ──────────────────────────────────────────
+env:
+  PROJECT_NAME: gravityflip-backend
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB 1: Construir imagen de la API .NET
+  # ──────────────────────────────────────────────────────────────────────────
+  build-api-net:
+    name: Construir API .NET
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      service_name: api-net
+      context_path: ./gravityflip.api
+    secrets:
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB 2: Construir imagen de la API NestJS
+  # ──────────────────────────────────────────────────────────────────────────
+  build-api-nestjs:
+    name: Construir API NestJS
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      service_name: api-nestjs
+      context_path: ./gravityflip-nestjs
+    secrets:
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # JOB 3: Verificar que ambas APIs se construyeron correctamente
+  # ──────────────────────────────────────────────────────────────────────────
+  notificar-exito:
+    name: Notificar exito
+    runs-on: ubuntu-latest
+    needs:
+      - build-api-net
+      - build-api-nestjs
+    steps:
+      - name: Mostrar mensaje de exito
+        run: |
+          echo "===================================="
+          echo "  Build completado exitosamente"
+          echo "===================================="
+          echo "  - API .NET:    OK"
+          echo "  - API NestJS:  OK"
+          echo "  - Proyecto:    ${{ env.PROJECT_NAME }}"
+          echo "===================================="
