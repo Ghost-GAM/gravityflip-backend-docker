@@ -37,6 +37,14 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # ───────────────────────────────────────────────────────────────────────
+      # Convertir el nombre del owner a minusculas
+      # GitHub Container Registry requiere nombres en minusculas
+      # ───────────────────────────────────────────────────────────────────────
+      - name: Convertir owner a minusculas
+        id: owner
+        run: echo "lowercase=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      # ───────────────────────────────────────────────────────────────────────
       # Login al GitHub Container Registry (ghcr.io)
       # Usa el token automatico de GitHub para autenticarse
       # ───────────────────────────────────────────────────────────────────────
@@ -49,7 +57,7 @@ jobs:
 
       # ───────────────────────────────────────────────────────────────────────
       # Construir y publicar la imagen Docker
-      # La imagen queda guardada en GitHub: ghcr.io/Ghost-GAM/<service>:latest
+      # La imagen queda guardada en GitHub: ghcr.io/<owner>/<service>:latest
       # ───────────────────────────────────────────────────────────────────────
       - name: Construir y publicar imagen Docker de ${{ inputs.service_name }}
         uses: docker/build-push-action@v5
@@ -58,8 +66,8 @@ jobs:
           file: ${{ inputs.context_path }}/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ inputs.service_name }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ inputs.service_name }}:${{ github.sha }}
+            ghcr.io/${{ steps.owner.outputs.lowercase }}/${{ inputs.service_name }}:latest
+            ghcr.io/${{ steps.owner.outputs.lowercase }}/${{ inputs.service_name }}:${{ github.sha }}
           build-args: |
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
@@ -67,5 +75,5 @@ jobs:
         run: |
           echo "===================================="
           echo "Imagen publicada exitosamente:"
-          echo "ghcr.io/${{ github.repository_owner }}/${{ inputs.service_name }}:latest"
+          echo "ghcr.io/${{ steps.owner.outputs.lowercase }}/${{ inputs.service_name }}:latest"
           echo "===================================="
